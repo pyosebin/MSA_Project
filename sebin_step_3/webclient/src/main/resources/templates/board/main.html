@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 목록</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"  crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 70px;
+            padding-bottom: 30px;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"  crossorigin="anonymous"></script>
+    <script type="text/javascript" th:inline="javascript">
+        function goDetail(id) {
+            let url = /*[[@{/board/}]]*/ "/board/";
+            location.href = url + id;
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                type:"GET",
+                url:"board/get/list",
+                dataType:"json",
+                success:function (data){
+                    $(data).each(function(i, item){
+                        let id = item.id;
+                        let title = item.title;
+                        let regDt = item.regDt;
+                        console.log("id :" + id);
+                        let td1 = $("<td></td>").text(id);
+                        let td2 = $("<td></td>").text(title);
+                        let td3 = $("<td></td>").text(regDt);
+                        let tr = $("<tr></tr>").append(td1, td2, td3);
+                        tr.attr("onclick","goDetail(\'" + id +"\');");
+                        $("#BoardTbl").append(tr);
+                    })
+                },
+                error: function (){
+                    alert("error");
+                }
+            });
+
+            $("#btnMoveWriteForm").click(function() {
+                location.href = /*[[@{/board/new}]]*/ "/board/new";
+            });
+        });
+    </script>
+</head>
+<body>
+<article>
+    <div class="container">
+        <h2>게시물 목록</h2>
+        <div>
+            <button id="btnMoveWriteForm" type="button" class="btn btn-sm btn-primary" style="float:right;margin-bottom:10px;">등록</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <colgroup>
+                    <col style="width:10%" />
+                    <col style="width:auto" />
+                    <col style="width:10%" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th style="text-align: center;">ID</th>
+                    <th style="text-align: center;">제목</th>
+                    <th style="text-align: center;">등록일자</th>
+                </tr>
+                </thead>
+                <tbody id="BoardTbl">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</article>
+</body>
+</html>
