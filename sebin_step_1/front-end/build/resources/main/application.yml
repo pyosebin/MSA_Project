@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: front-end
+  datasource:
+    url: jdbc:mysql://34.125.255.108:3306/SEBINDB?characterEncoding=UTF-8
+    username: SEBIN
+    password: "1"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations:
+    - /mapper/**/*.xml
+
+server:
+  port: 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
